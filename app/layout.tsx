@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import './globals.css'
-import { Montserrat} from '@next/font/google'
+import { Montserrat} from 'next/font/google'
 
 
 const montserrat = Montserrat({ subsets: ['latin'], variable: '---font-montserrat' });
