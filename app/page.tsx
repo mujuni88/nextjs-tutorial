@@ -1,4 +1,10 @@
+import { Metadata } from "next";
 import Movie from "./Movie";
+
+export const metadata: Metadata = {
+  title: "Popular Movies",
+  description: "A list of popular movies"
+}
 
 export async function generateStaticParams(){
   const url = `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.API_KEY}&language=en-US&page=1`;

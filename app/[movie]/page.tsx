@@ -1,5 +1,11 @@
 import { title } from "process";
 import Image from 'next/image';
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Movie Details',
+  description: 'Movie Details',
+}
 
 export default async function MovieDetails({params}: {params: {movie: string}}){
   const url = `https://api.themoviedb.org/3/movie/${params.movie}?api_key=${process.env.API_KEY}&language=en-US`;
