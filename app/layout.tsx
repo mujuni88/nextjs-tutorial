@@ -1,9 +1,13 @@
 import Link from 'next/link';
 import './globals.css'
-import { Montserrat} from 'next/font/google'
+import { Montserrat, Open_Sans} from 'next/font/google'
+import Nav from './auth/Nav';
+import clsx from 'clsx';
 
 
 const montserrat = Montserrat({ subsets: ['latin'], variable: '---font-montserrat' });
+const openSans = Open_Sans({ subsets: ['latin'], variable: '---font-open-sans' });
+
 
 export const metadata = {
   title: 'Create Next App',
@@ -16,15 +20,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={montserrat.className}>
+    <html lang="en" className={clsx(montserrat.variable, openSans.className)}>
       <body className='h-screen'>
-        <nav className='flex flex-row gap-3 mb-2 p-2'>
-          <h1>Joe Buza</h1>
-          <ul className='flex gap-1'>
-            <li><Link href={'/'}>Home</Link></li>
-            <li><Link href='/about'>About</Link></li>
-          </ul>
-        </nav>
+        <Nav />
         {children}
         </body>
     </html>
