@@ -8,11 +8,13 @@ export const server = z.object({
     DB_USERNAME: z.string(),
     DB_PASSWORD: z.string(),
     GITHUB_ID: z.string(),
-    GITHUB_SECRET: z.string(),
+    GITHUB_SECRET: z.string(),  
+    NODE_ENV: z.enum(["development", "test", "production"]),
 })
 
 // Define the shape of client environment variables
 export const client = z.object({
+  // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
 })
 
 /**
@@ -29,7 +31,8 @@ const processEnv = {
   DB_NAME: process.env.DB_NAME,
   NODE_ENV: process.env.NODE_ENV,
   GITHUB_ID: process.env.GITHUB_ID,
-  GITHUB_SECRET: process.env.GITHUB_SECRET
+  GITHUB_SECRET: process.env.GITHUB_SECRET  
+  // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 
 // Don't touch the part below
