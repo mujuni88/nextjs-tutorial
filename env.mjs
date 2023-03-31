@@ -10,6 +10,17 @@ export const server = z.object({
     GITHUB_ID: z.string(),
     GITHUB_SECRET: z.string(),  
     NODE_ENV: z.enum(["development", "test", "production"]),
+    NEXTAUTH_SECRET:
+        process.env.NODE_ENV === "production"
+          ? z.string().min(1)
+          : z.string().min(1).optional(),
+    NEXTAUTH_URL: z.preprocess(
+      // This makes Vercel deployments not fail if you don't set NEXTAUTH_URL
+      // Since NextAuth.js automatically uses the VERCEL_URL if present.
+      (str) => process.env.VERCEL_URL ?? str,
+      // VERCEL_URL doesn't include `https` so it cant be validated as a URL
+      process.env.VERCEL ? z.string().min(1) : z.string().url()
+    ),
 })
 
 // Define the shape of client environment variables
@@ -31,7 +42,9 @@ const processEnv = {
   DB_NAME: process.env.DB_NAME,
   NODE_ENV: process.env.NODE_ENV,
   GITHUB_ID: process.env.GITHUB_ID,
-  GITHUB_SECRET: process.env.GITHUB_SECRET  
+  GITHUB_SECRET: process.env.GITHUB_SECRET,
+  NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+  NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 
