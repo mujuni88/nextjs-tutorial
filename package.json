@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "migrate": "drizzle-kit generate:mysql"
   },
   "dependencies": {
     "@planetscale/database": "1.6.0",

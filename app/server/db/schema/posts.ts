@@ -1,11 +1,4 @@
-import {
-  int,
-  mysqlTable,
-  serial,
-  text,
-  timestamp,
-  varchar,
-} from 'drizzle-orm/mysql-core';
+import { mysqlTable, serial, text, timestamp } from 'drizzle-orm/mysql-core';
 import { users } from '.';
 import { InferModel } from 'drizzle-orm';
 import { PlanetScaleDatabase } from 'drizzle-orm/planetscale-serverless';

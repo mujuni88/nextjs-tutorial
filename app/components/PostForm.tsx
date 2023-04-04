@@ -8,7 +8,7 @@ export default function PostForm() {
     const { title, content } = e.currentTarget.elements as any;
     console.log(title.value, content.value);
 
-    const res = await fetch('/api/posts/addPost', {
+    const res = await fetch('/api/posts/createPost', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
