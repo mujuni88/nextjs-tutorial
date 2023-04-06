@@ -2,6 +2,7 @@ import { mysqlTable, serial, text, timestamp } from 'drizzle-orm/mysql-core';
 import { users } from '.';
 import { InferModel } from 'drizzle-orm';
 import { PlanetScaleDatabase } from 'drizzle-orm/planetscale-serverless';
+import { eq } from 'drizzle-orm/expressions';
 
 export const posts = mysqlTable('posts', {
   id: serial('id').primaryKey(),
@@ -26,4 +27,12 @@ export async function insertPost(
 
 export async function getPosts(db: PlanetScaleDatabase): Promise<Post[]> {
   return db.select().from(posts);
+}
+
+export async function deletePost(
+  db: PlanetScaleDatabase,
+  id: string
+): Promise<any> {
+  //@ts-ignore
+  return await db.delete(posts).where(eq(posts.id, id));
 }

@@ -3,6 +3,7 @@ import { Montserrat, Open_Sans } from 'next/font/google';
 import Nav from '@components/Nav';
 import clsx from 'clsx';
 import React from 'react';
+import { QueryWrapper } from './components/QueryWrapper';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -26,8 +27,10 @@ export default async function RootLayout({
   return (
     <html lang="en" className={clsx(montserrat.variable, openSans.className)}>
       <body className="h-screen">
-        <Nav />
-        {children}
+        <QueryWrapper>
+          <Nav />
+          {children}
+        </QueryWrapper>
       </body>
     </html>
   );

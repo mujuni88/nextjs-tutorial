@@ -1,25 +1,30 @@
 'use client';
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
+import { Post } from '../server/db';
+
+const createPost = async (data: Pick<Post, 'title' | 'content'>) => {
+  return await fetch('/api/posts/createPost', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+};
 
 export default function PostForm() {
+  const qc = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: createPost,
+    onSuccess: (data) => qc.invalidateQueries(['posts']),
+  });
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { title, content } = e.currentTarget.elements as any;
-    console.log(title.value, content.value);
-
-    const res = await fetch('/api/posts/createPost', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title: title.value,
-        content: content.value,
-      }),
-    });
-
-    console.log(res);
+    mutation.mutate({ title: title.value, content: content.value });
   };
 
   return (
