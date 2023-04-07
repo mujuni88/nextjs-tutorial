@@ -32,7 +32,9 @@ export default async function RootLayout({
       <body className="h-screen bg-white">
         <QueryWrapper>
           <Nav />
-          <main className="h-full max-w-screen-lg m-auto">{children}</main>
+          <main className="h-full max-w-full lg:max-w-screen-lg lg:mx-auto">
+            {children}
+          </main>
         </QueryWrapper>
       </body>
     </html>

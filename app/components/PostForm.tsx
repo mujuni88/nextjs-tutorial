@@ -1,11 +1,12 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import React, { InputHTMLAttributes } from 'react';
+import clsx from 'clsx';
+import React, { useReducer } from 'react';
 import { Post } from '../server/db';
+import { PrimaryButton } from './Button';
 import { Input } from './Input';
 import { TextArea } from './TextArea';
-import { PrimaryButton } from './Button';
 
 const createPost = async (data: Pick<Post, 'title' | 'content'>) => {
   return await fetch('/api/posts/createPost', {
@@ -17,9 +18,43 @@ const createPost = async (data: Pick<Post, 'title' | 'content'>) => {
   });
 };
 
+type Action = {
+  type: 'title' | 'content' | 'clear';
+  payload: string;
+};
+
+type State = {
+  title: string;
+  content: string;
+  length: number;
+};
+
+const reducer = (state: State, action: Action) => {
+  switch (action.type) {
+    case 'title':
+      return { ...state, title: action.payload };
+    case 'content':
+      return {
+        ...state,
+        content: action.payload,
+        length: action.payload.length,
+      };
+    case 'clear':
+      return { title: '', content: '', length: 0 };
+    default:
+      return state;
+  }
+};
+
 export default function PostForm() {
+  const [state, dispatch] = useReducer(reducer, {
+    title: '',
+    content: '',
+    length: 0,
+  });
+
   const qc = useQueryClient();
-  const mutation = useMutation({
+  const { isLoading, mutateAsync } = useMutation({
     mutationFn: createPost,
     onSuccess: () => qc.invalidateQueries(['posts']),
   });
@@ -27,19 +62,54 @@ export default function PostForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { title, content } = e.currentTarget.elements as any;
-    mutation.mutate({ title: title.value, content: content.value });
+    await mutateAsync({ title: title.value, content: content.value });
+    dispatch({ type: 'clear', payload: '' });
+  };
+
+  const handleOnChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    dispatch({ type: name as 'title' | 'content', payload: value });
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-4 bg-white border-2 shadow-sm rounded-md p-5 my-2 w-2/3 text-sm"
+      className="my-2 flex w-3/4 flex-col gap-4 rounded-md border-2 bg-white p-5 text-sm shadow-sm md:w-2/3"
     >
-      <Input type="text" name="title" placeholder="Title" />
-      <TextArea name="content" aria-rowcount={3} placeholder="Content" />
-      <PrimaryButton className="w-fit ml-auto" type="submit">
-        Submit
-      </PrimaryButton>
+      <Input
+        type="text"
+        name="title"
+        placeholder="Title"
+        value={state.title}
+        onChange={handleOnChange}
+      />
+      <TextArea
+        name="content"
+        aria-rowcount={3}
+        placeholder="Content"
+        value={state.content}
+        onChange={handleOnChange}
+      />
+      <div className="flex justify-between">
+        <div
+          className={clsx(
+            'text-xs text-gray-500',
+            state.length > 200 && state.length < 300 && 'text-yellow-500',
+            state.length > 300 && 'text-red-500'
+          )}
+        >
+          {state.length}/300
+        </div>
+        <PrimaryButton
+          className="ml-auto w-fit disabled:opacity-50"
+          type="submit"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Submitting...' : 'Submit'}
+        </PrimaryButton>
+      </div>
     </form>
   );
 }

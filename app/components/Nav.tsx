@@ -1,13 +1,13 @@
+import { asSyncComponent } from '@components/asSyncComponent';
+import { getSession } from '@server/session';
 import Image from 'next/image';
 import Login from './Login';
-import { getSession } from '@server/session';
 import Logout from './Logout';
-import { asSyncComponent } from '@components/asSyncComponent';
 
 async function Nav() {
   const session = await getSession();
   return (
-    <nav className="flex items-center justify-between p-5 bg-indigo-900 text-teal-100 font-montserrat">
+    <nav className="flex items-center justify-between p-5">
       <h1>My App</h1>
       <ul className="flex items-center gap-3">
         {session?.user?.image ? (
