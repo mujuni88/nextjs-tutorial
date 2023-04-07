@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import { getSession } from '@server/session';
 import PostForm from '@/app/components/PostForm';
 import Posts from '@components/Posts';
 
@@ -8,7 +7,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const { user } = (await getSession()) || {};
   return (
     <div className="h-full flex flex-col items-center">
       <h1 className="text-lg my-4">Enter Your Post</h1>

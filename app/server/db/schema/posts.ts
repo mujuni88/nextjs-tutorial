@@ -1,8 +1,8 @@
-import { mysqlTable, serial, text, timestamp } from 'drizzle-orm/mysql-core';
-import { users } from '.';
 import { InferModel } from 'drizzle-orm';
-import { PlanetScaleDatabase } from 'drizzle-orm/planetscale-serverless';
 import { eq } from 'drizzle-orm/expressions';
+import { mysqlTable, serial, text, timestamp } from 'drizzle-orm/mysql-core';
+import { PlanetScaleDatabase } from 'drizzle-orm/planetscale-serverless';
+import { users } from '.';
 
 export const posts = mysqlTable('posts', {
   id: serial('id').primaryKey(),
@@ -18,10 +18,7 @@ export const posts = mysqlTable('posts', {
 export type Post = InferModel<typeof posts>;
 export type NewPost = InferModel<typeof posts, 'insert'>;
 
-export async function insertPost(
-  db: PlanetScaleDatabase,
-  post: NewPost
-): Promise<any> {
+export async function insertPost(db: PlanetScaleDatabase, post: NewPost) {
   return db.insert(posts).values(post);
 }
 
@@ -29,10 +26,6 @@ export async function getPosts(db: PlanetScaleDatabase): Promise<Post[]> {
   return db.select().from(posts);
 }
 
-export async function deletePost(
-  db: PlanetScaleDatabase,
-  id: string
-): Promise<any> {
-  //@ts-ignore
+export async function deletePost(db: PlanetScaleDatabase, id: number) {
   return await db.delete(posts).where(eq(posts.id, id));
 }

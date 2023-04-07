@@ -8,6 +8,9 @@ import { PrimaryButton } from './Button';
 import { Input } from './Input';
 import { TextArea } from './TextArea';
 
+type FormElement<U extends string> = HTMLFormControlsCollection &
+  Record<U, HTMLInputElement | HTMLTextAreaElement>;
+
 const createPost = async (data: Pick<Post, 'title' | 'content'>) => {
   return await fetch('/api/posts/createPost', {
     method: 'POST',
@@ -61,7 +64,10 @@ export default function PostForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { title, content } = e.currentTarget.elements as any;
+    const { title, content } = e.currentTarget.elements as FormElement<
+      'title' | 'content'
+    >;
+
     await mutateAsync({ title: title.value, content: content.value });
     dispatch({ type: 'clear', payload: '' });
   };

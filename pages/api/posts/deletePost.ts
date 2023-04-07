@@ -1,4 +1,4 @@
-import { deletePost, db } from '@/app/server/db';
+import { db, deletePost } from '@/app/server/db';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
@@ -10,7 +10,7 @@ export default async function handler(
 
     console.log('DELETE id', id);
     try {
-      const post = await deletePost(db, id as string);
+      const post = await deletePost(db, id);
       console.log('After deletePost', post);
       res.status(200).json(post);
     } catch (err) {

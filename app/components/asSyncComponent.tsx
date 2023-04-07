@@ -1,8 +1,6 @@
 import React from 'react';
 
-type AFC<P = Record<string, never>> = (
-  ...args: Parameters<React.FC<P>>
-) => Promise<ReturnType<React.FC<P>>>;
+type AFC<P = Record<string, never>> = () => Promise<ReturnType<React.FC<P>>>;
 
 export function asSyncComponent<T extends AFC<unknown>>(
   component: T
