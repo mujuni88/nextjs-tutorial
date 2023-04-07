@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { SecondaryButton } from './Button';
 
 const handleDelete = async (id: number) => {
   return await fetch('/api/posts/deletePost', {
@@ -15,20 +16,23 @@ const handleDelete = async (id: number) => {
   });
 };
 
-export default function PostDelete({ id }: { id: number }) {
+export default function PostDelete({
+  id,
+  className,
+}: {
+  id: number;
+  className?: string;
+}) {
   const qc = useQueryClient();
   const mutation = useMutation({
     mutationFn: handleDelete,
-    onSuccess: (data) => qc.invalidateQueries(['posts']),
+    onSuccess: () => qc.invalidateQueries(['posts']),
     onError: (error) => console.error(error),
   });
 
   return (
-    <button
-      className="p-2 px-4 bg-teal-400 rounded-md"
-      onClick={() => mutation.mutate(id)}
-    >
+    <SecondaryButton onClick={() => mutation.mutate(id)} className={className}>
       Delete
-    </button>
+    </SecondaryButton>
   );
 }

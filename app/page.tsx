@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { getSession } from '@server/session';
-import PostForm from '@components/PostForm';
+import PostForm from '@/app/components/PostForm';
 import Posts from '@components/Posts';
 
 export const metadata: Metadata = {
@@ -10,11 +10,12 @@ export const metadata: Metadata = {
 export default async function Home() {
   const { user } = (await getSession()) || {};
   return (
-    <main className="p-5 h-full">
-      <h1>Home {user?.name ?? 'N/A'}</h1>
-
+    <div className="h-full flex flex-col items-center">
+      <h1 className="text-lg my-4">Enter Your Post</h1>
       <PostForm />
+
+      <h1 className="text-lg my-4">Posts</h1>
       <Posts />
-    </main>
+    </div>
   );
 }

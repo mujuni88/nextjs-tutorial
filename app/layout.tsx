@@ -25,11 +25,14 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={clsx(montserrat.variable, openSans.className)}>
-      <body className="h-screen">
+    <html
+      lang="en"
+      className={clsx(montserrat.variable, openSans.className, 'bg-white')}
+    >
+      <body className="h-screen bg-white">
         <QueryWrapper>
           <Nav />
-          {children}
+          <main className="h-full max-w-screen-lg m-auto">{children}</main>
         </QueryWrapper>
       </body>
     </html>
