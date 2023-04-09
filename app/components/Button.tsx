@@ -9,7 +9,7 @@ function PrimaryButton({ className, ...rest }: ButtonProps) {
   return (
     <button
       className={clsx(
-        'bg-indigo-900 text-white font-montserrat rounded-md py-2 px-4 hover:bg-indigo-800 font-bold',
+        'bg-gradient-to-r from-indigo-800 to-indigo-600 text-white rounded-md py-2 px-4 hover:opacity-80 font-bold shadow-sm shadow-indigo-500/40',
         className
       )}
       {...rest}
@@ -21,7 +21,7 @@ function SecondaryButton({ className, ...rest }: ButtonProps) {
   return (
     <button
       className={clsx(
-        'bg-teal-500 text-black font-montserrat rounded-md py-2 px-4 hover:bg-teal-400 font-semibold',
+        'bg-gradient-to-b from-indigo-600 to-indigo-400 text-transparent bg-clip-text rounded-md py-2 px-4 hover:opacity-80 font-bold shadow-sm shadow-indigo-500/40 ring-1 ring-indigo-600',
         className
       )}
       {...rest}

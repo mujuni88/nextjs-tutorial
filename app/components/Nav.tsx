@@ -8,7 +8,9 @@ async function Nav() {
   const session = await getSession();
   return (
     <nav className="flex items-center justify-between p-5">
-      <h1>My App</h1>
+      <h1 className="text-transparent font-bold bg-gradient-to-r from-indigo-800 to-blue-400 bg-clip-text">
+        My App
+      </h1>
       <ul className="flex items-center gap-3">
         {session?.user?.image ? (
           <li>

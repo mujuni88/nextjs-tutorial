@@ -1,25 +1,13 @@
 'use client';
-
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import React, { useReducer } from 'react';
-import { Post } from '../server/db';
+import { trpc } from '../utils/trpc';
 import { PrimaryButton } from './Button';
 import { Input } from './Input';
 import { TextArea } from './TextArea';
 
 type FormElement<U extends string> = HTMLFormControlsCollection &
   Record<U, HTMLInputElement | HTMLTextAreaElement>;
-
-const createPost = async (data: Pick<Post, 'title' | 'content'>) => {
-  return await fetch('/api/posts/createPost', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-};
 
 type Action = {
   type: 'title' | 'content' | 'clear';
@@ -49,17 +37,16 @@ const reducer = (state: State, action: Action) => {
   }
 };
 
-export default function PostForm() {
+export default function PostForm({ authorId }: { authorId: string }) {
   const [state, dispatch] = useReducer(reducer, {
     title: '',
     content: '',
     length: 0,
   });
 
-  const qc = useQueryClient();
-  const { isLoading, mutateAsync } = useMutation({
-    mutationFn: createPost,
-    onSuccess: () => qc.invalidateQueries(['posts']),
+  const util = trpc.useContext();
+  const { isLoading, mutateAsync } = trpc.post.create.useMutation({
+    onSuccess: () => util.post.all.invalidate(),
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -68,7 +55,7 @@ export default function PostForm() {
       'title' | 'content'
     >;
 
-    await mutateAsync({ title: title.value, content: content.value });
+    await mutateAsync({ title: title.value, content: content.value, authorId });
     dispatch({ type: 'clear', payload: '' });
   };
 

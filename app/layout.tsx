@@ -3,7 +3,7 @@ import { Montserrat, Open_Sans } from 'next/font/google';
 import Nav from '@components/Nav';
 import clsx from 'clsx';
 import React from 'react';
-import { QueryWrapper } from './components/QueryWrapper';
+import { TrpcProvider } from './components/TrpcProvider';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -30,12 +30,12 @@ export default async function RootLayout({
       className={clsx(montserrat.variable, openSans.className, 'bg-white')}
     >
       <body className="h-screen bg-white">
-        <QueryWrapper>
-          <Nav />
-          <main className="h-full max-w-full lg:max-w-screen-lg lg:mx-auto">
-            {children}
-          </main>
-        </QueryWrapper>
+        <TrpcProvider>
+            <Nav />
+            <main className="h-full max-w-full lg:max-w-screen-lg lg:mx-auto">
+              {children}
+            </main>
+        </TrpcProvider>
       </body>
     </html>
   );
