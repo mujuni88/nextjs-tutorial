@@ -1,24 +1,21 @@
 import { TRPCError, initTRPC } from '@trpc/server';
-import { ZodError } from 'zod';
-import superjson from 'superjson';
 import { CreateNextContextOptions } from '@trpc/server/adapters/next';
+import { Session } from 'next-auth';
+import superjson from 'superjson';
+import { ZodError } from 'zod';
 import { getServerAuthSession } from './auth';
 import { db } from './db';
 
-
-// add drizzle db to context
-type PromiseReturnType<T> = T extends Promise<infer U> ?  U : T;
-
 type CreateTRPCContextOptions = {
-  session: PromiseReturnType<ReturnType<typeof getServerAuthSession>>;
+  session: Session | null;
 };
 
 export const createInnerTRPCContext = (opts: CreateTRPCContextOptions) => {
   return {
-    session:opts.session,
-    db
-  }
-}
+    session: opts.session,
+    db,
+  };
+};
 
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
@@ -54,20 +51,20 @@ export const createTRPCRouter = t.router;
  * Reusable middleware that enforces users are logged in before running the
  * procedure
  */
-export const enforceIsAuthed = t.middleware(({ctx, next}) => {
-    if (!ctx?.session?.user) {
-        throw new TRPCError({ code: "UNAUTHORIZED" });
-    }
+export const enforceIsAuthed = t.middleware(({ ctx, next }) => {
+  if (!ctx?.session?.user) {
+    throw new TRPCError({ code: 'UNAUTHORIZED' });
+  }
 
-    return next({
-        ctx: {
-            ...ctx,
-            session: {
-                ...ctx.session, 
-                user: ctx.session.user
-            }
-        }
-    });
+  return next({
+    ctx: {
+      ...ctx,
+      session: {
+        ...ctx.session,
+        user: ctx.session.user,
+      },
+    },
+  });
 });
 
 /**
