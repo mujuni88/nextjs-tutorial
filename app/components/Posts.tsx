@@ -1,6 +1,7 @@
 'use client';
 
-import { type Post } from '@server/db';
+import Image from 'next/image';
+import { RouterOutputs } from '../server/routers/root';
 import { trpc } from '../utils/trpc';
 import { SecondaryButton } from './Button';
 
@@ -18,7 +19,7 @@ export default function Posts() {
   );
 }
 
-function Post({ post }: { post: Post }) {
+function Post({ post }: { post: RouterOutputs['post']['all'][number] }) {
   const util = trpc.useContext();
   const { mutateAsync, isLoading } = trpc.post.delete.useMutation({
     onSuccess: () => util.post.all.invalidate(),
@@ -32,13 +33,27 @@ function Post({ post }: { post: Post }) {
   return (
     <article
       key={post.id}
-      className="flex flex-col gap-2 rounded-md border-2 bg-white p-3 text-sm shadow-sm "
+      className="flex flex-col gap-4 rounded-md border-2 bg-white py-5 px-3 text-sm shadow-sm max-w-[15rem]"
     >
-      <div className="bg-gray-500 aspect-square" />
-      <h1 className="text-md font-semibold text-indigo-900">{post.title}</h1>
-      <p className="mb-4 text-xs text-ellipsis max-w-[40px] whitespace-nowrap overflow-hidden">
-        {post.content}
-      </p>
+      {post.userAvatar ? (
+        <div className="grid grid-cols-[auto_1fr] gap-4 items-center">
+          <Image
+            src={post.userAvatar}
+            alt="User avatar"
+            className="rounded-full border-2 border-cyan-300 outline-offset-2"
+            width={48}
+            height={48}
+          />
+          <div>
+            <p className="text-sm text-gray-600">{post.userName}</p>
+            <p className="text-xs text-gray-500">{post.userEmail}</p>
+          </div>
+        </div>
+      ) : null}
+      <div className="space-y-1 flex-grow">
+        <h1 className="text-md font-semibold text-indigo-900">{post.title}</h1>
+        <p className="mb-4 text-xs max-h-48 overflow-auto">{post.content}</p>
+      </div>
       <SecondaryButton
         onClick={handleOnDelete}
         className={'text-sm disabled:opacity-50'}
