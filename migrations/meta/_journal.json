@@ -13,6 +13,18 @@
       "version": "5",
       "when": 1680657026679,
       "tag": "0001_many_ravenous"
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1681773044401,
+      "tag": "0002_abnormal_norrin_radd"
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1681883376190,
+      "tag": "0003_misty_arclight"
     }
   ]
 }

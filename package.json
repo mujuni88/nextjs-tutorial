@@ -9,9 +9,10 @@
     "lint": "next lint",
     "prepare": "husky install",
     "migrate": "drizzle-kit generate:mysql",
-    "migrate:up": "drizzle-kit migrate:mysql",
+    "migrate:up": "npm run migrate && node --experimental-specifier-resolution=node migrate.mjs",
     "analyze": "ANALYZE=true next build",
-    "test": "vitest"
+    "test": "vitest",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@planetscale/database": "1.6.0",
@@ -30,6 +31,7 @@
     "mysql2": "3.2.0",
     "next": "13.2.4",
     "next-auth": "4.20.1",
+    "otpauth": "9.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "superjson": "^1.12.2",
@@ -38,6 +40,7 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "13.3.0",
+    "@playwright/test": "1.32.3",
     "@typescript-eslint/eslint-plugin": "5.57.0",
     "@typescript-eslint/parser": "5.57.0",
     "autoprefixer": "10.4.14",

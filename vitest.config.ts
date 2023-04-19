@@ -1,10 +1,10 @@
-import { config } from 'dotenv';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import { defineConfig } from 'vitest/config';
-
-config({ path: '.env.local', override: true, debug: true });
+import { configDefaults, defineConfig } from 'vitest/config';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  test: {
+    exclude: [...configDefaults.exclude, './e2e*/**/*'],
+  },
   plugins: [tsconfigPaths()],
 });
