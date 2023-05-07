@@ -1,10 +1,9 @@
-import { asSyncComponent } from '@components/asSyncComponent';
 import { getSession } from '@server/session';
 import Image from 'next/image';
 import Login from './Login';
 import Logout from './Logout';
 
-async function Nav() {
+export async function Nav() {
   const session = await getSession();
   return (
     <nav className="flex items-center justify-between p-5">
@@ -29,6 +28,3 @@ async function Nav() {
     </nav>
   );
 }
-
-const _Nav = asSyncComponent(Nav);
-export default _Nav;

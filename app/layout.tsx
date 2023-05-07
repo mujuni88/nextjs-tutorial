@@ -1,9 +1,9 @@
-import './globals.css';
-import { Montserrat, Open_Sans } from 'next/font/google';
-import Nav from '@components/Nav';
+import { Nav } from '@components/Nav';
 import clsx from 'clsx';
+import { Montserrat, Open_Sans } from 'next/font/google';
 import React from 'react';
 import { TrpcProvider } from './components/TrpcProvider';
+import './globals.css';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -31,10 +31,10 @@ export default async function RootLayout({
     >
       <body className="h-screen bg-white">
         <TrpcProvider>
-            <Nav />
-            <main className="h-full max-w-full lg:max-w-screen-lg lg:mx-auto">
-              {children}
-            </main>
+          <Nav />
+          <main className="h-full max-w-full lg:max-w-screen-lg lg:mx-auto">
+            {children}
+          </main>
         </TrpcProvider>
       </body>
     </html>
